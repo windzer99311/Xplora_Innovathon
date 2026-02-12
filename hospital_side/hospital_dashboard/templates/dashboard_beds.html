@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Bed Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2><i class="bi bi-grid-3x3"></i> Bed Management Dashboard</h2>
+        <p class="text-muted">Update available bed counts for your hospital</p>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Update Bed Availability</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('dashboard_beds') }}">
+                    <!-- ICU Beds -->
+                    <div class="bed-section mb-4">
+                        <h5 class="text-primary">
+                            <i class="bi bi-heart-pulse"></i> ICU Beds
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Total ICU Beds</label>
+                                <input type="number" name="icu_total" class="form-control" 
+                                       value="{{ beds.icu_total }}" min="0" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Available ICU Beds</label>
+                                <input type="number" name="icu_available" class="form-control" 
+                                       value="{{ beds.icu_available }}" min="0" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- General Beds -->
+                    <div class="bed-section mb-4">
+                        <h5 class="text-success">
+                            <i class="bi bi-hospital"></i> General Beds
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Total General Beds</label>
+                                <input type="number" name="general_total" class="form-control" 
+                                       value="{{ beds.general_total }}" min="0" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Available General Beds</label>
+                                <input type="number" name="general_available" class="form-control" 
+                                       value="{{ beds.general_available }}" min="0" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Oxygen Beds -->
+                    <div class="bed-section mb-4">
+                        <h5 class="text-info">
+                            <i class="bi bi-lungs"></i> Oxygen Beds
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Total Oxygen Beds</label>
+                                <input type="number" name="oxygen_total" class="form-control" 
+                                       value="{{ beds.oxygen_total }}" min="0" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Available Oxygen Beds</label>
+                                <input type="number" name="oxygen_available" class="form-control" 
+                                       value="{{ beds.oxygen_available }}" min="0" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <i class="bi bi-save"></i> Update Bed Data
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow mb-3">
+            <div class="card-header bg-info text-white">
+                <h6 class="mb-0">Current Summary</h6>
+            </div>
+            <div class="card-body">
+                <div class="summary-item mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span><i class="bi bi-heart-pulse text-primary"></i> ICU</span>
+                        <strong>{{ beds.icu_available }} / {{ beds.icu_total }}</strong>
+                    </div>
+                </div>
+                <div class="summary-item mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span><i class="bi bi-hospital text-success"></i> General</span>
+                        <strong>{{ beds.general_available }} / {{ beds.general_total }}</strong>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="d-flex justify-content-between">
+                        <span><i class="bi bi-lungs text-info"></i> Oxygen</span>
+                        <strong>{{ beds.oxygen_available }} / {{ beds.oxygen_total }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle"></i>
+            <strong>Important:</strong> Updated bed counts will be immediately visible to clients searching for emergency beds.
+        </div>
+    </div>
+</div>
+{% endblock %}

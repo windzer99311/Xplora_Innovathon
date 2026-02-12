@@ -1,0 +1,346 @@
+/* Booking Page Styles */
+
+/* Body specific for booking page */
+.booking-page-body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #f5f7fa;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.booking-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.back-nav {
+    margin-bottom: 20px;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #1f2937;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    color: #20c997;
+    transform: translateX(-4px);
+}
+
+.back-btn svg {
+    transition: transform 0.2s;
+}
+
+.back-btn:hover svg {
+    transform: translateX(-2px);
+}
+
+.booking-card {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Hospital Header */
+.hospital-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.hospital-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+}
+
+.status-badge {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.available {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-badge.full {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Hospital Meta */
+.hospital-meta {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.meta-item svg {
+    color: #9ca3af;
+}
+
+/* Section Block */
+.section-block {
+    margin-bottom: 32px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 16px;
+}
+
+/* Bed Cards */
+.bed-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.bed-card {
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    user-select: none;
+}
+
+.bed-card:hover {
+    border-color: #20c997;
+    background: #f0fdf4;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(32, 201, 151, 0.15);
+}
+
+.bed-card.active {
+    background: #d1fae5;
+    border-color: #20c997;
+    border-width: 2px;
+    box-shadow: 0 4px 12px rgba(32, 201, 151, 0.25);
+}
+
+.bed-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 12px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #20c997;
+}
+
+.bed-card.active .bed-icon {
+    background: #20c997;
+    color: white;
+}
+
+.bed-label {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.bed-count {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.bed-count span:first-child {
+    color: #20c997;
+}
+
+/* Service Options */
+.service-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.service-option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.service-option:hover {
+    border-color: #20c997;
+    background: #f0fdf4;
+    box-shadow: 0 2px 8px rgba(32, 201, 151, 0.1);
+}
+
+.service-option:has(input:checked) {
+    border-color: #20c997;
+    background: #f0fdf4;
+    box-shadow: 0 2px 8px rgba(32, 201, 151, 0.15);
+}
+
+.service-option input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.service-option input[type="checkbox"]:checked ~ .service-content {
+    color: #1f2937;
+}
+
+.service-option input[type="checkbox"]:checked ~ .checkmark {
+    background: #20c997;
+    border-color: #20c997;
+}
+
+.service-option input[type="checkbox"]:checked ~ .checkmark:after {
+    display: block;
+}
+
+.service-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.service-icon {
+    font-size: 32px;
+    width: 56px;
+    height: 56px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.service-details {
+    flex: 1;
+}
+
+.service-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 4px;
+}
+
+.service-desc {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* Custom Checkmark */
+.checkmark {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 11px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Proceed Button */
+.proceed-btn {
+    width: 100%;
+    padding: 16px;
+    background: #2c5f7d;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 24px;
+}
+
+.proceed-btn:hover {
+    background: #1e4158;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(44, 95, 125, 0.3);
+}
+
+.proceed-btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .booking-container {
+        padding: 16px;
+    }
+
+    .booking-card {
+        padding: 24px;
+    }
+
+    .bed-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .hospital-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .hospital-meta {
+        flex-direction: column;
+        gap: 12px;
+    }
+}

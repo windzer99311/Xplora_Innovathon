@@ -1,0 +1,92 @@
+AMBULANCE MANAGEMENT SYSTEM - SETUP INSTRUCTIONS
+================================================
+
+1. INSTALL DEPENDENCIES:
+   pip install -r requirements.txt
+
+2. CONFIGURE HTTPSMS API:
+   - Open app.py
+   - Replace 'your-httpsms-api-key' with your actual HTTPSMS API key
+   - Line 19: HTTPSMS_API_KEY = 'your-actual-api-key-here'
+
+3. CONFIGURE SECRET KEY:
+   - Open app.py
+   - Replace 'your-secret-key-change-this' with a random secret key
+   - Line 14: app.secret_key = 'your-random-secret-key-here'
+
+4. RUN THE APPLICATION:
+   python app.py
+
+5. ACCESS THE SYSTEM:
+   - Open browser: http://localhost:5000
+   - Register as ambulance driver
+   - Login with your credentials
+
+6. TESTING REQUESTS:
+   - To test the system, add a sample request using:
+     http://localhost:5000/test-add-request/<driver_id>
+   - Replace <driver_id> with your registered driver ID
+   - Example: http://localhost:5000/test-add-request/DRV001
+
+FOLDER STRUCTURE:
+=================
+ambulance_side/
+│
+├── app.py                  (Main Flask application)
+├── requirements.txt        (Python dependencies)
+├── ambulances.db          (Created automatically - stores driver info)
+├── user.db                (Created automatically - stores OTPs)
+│
+├── templates/
+│   ├── register.html      (Registration page)
+│   ├── login.html         (Login page)
+│   ├── dashboard.html     (Driver dashboard with requests)
+│   └── map.html           (Live navigation map)
+│
+└── Request/
+    └── <driver_id>.db     (Created per driver - stores requests)
+
+FEATURES:
+=========
+✅ Driver Registration with OTP verification
+✅ Secure login with SHA256 password hashing
+✅ Personal database for each driver
+✅ Live location tracking
+✅ Request notification panel
+✅ Accept/Deny request functionality
+✅ SMS notifications to patients
+✅ Live map with routing
+✅ Call patient button
+✅ Auto-refresh dashboard
+
+SECURITY:
+=========
+- Passwords hashed with SHA256
+- Session-based authentication
+- Login required decorator
+- Input validation
+- Unique constraints on driver_id, phone, aadhar
+
+API ENDPOINTS:
+=============
+GET  /                              → Redirect to register
+GET  /register                      → Registration page
+POST /register                      → Register driver
+POST /send-otp                      → Send OTP to phone
+GET  /login                         → Login page
+POST /login                         → Login driver
+GET  /dashboard                     → Driver dashboard (requires login)
+POST /update-location               → Update driver location
+GET  /accept-request/<id>           → Accept request (requires login)
+GET  /deny-request/<id>             → Deny request (requires login)
+GET  /map                           → Live navigation map (requires login)
+GET  /logout                        → Logout
+GET  /test-add-request/<driver_id>  → Add test request
+
+NOTES:
+======
+- Dashboard auto-refreshes every 10 seconds
+- Location updates in real-time on map
+- SMS sent only when request is accepted
+- Leaflet.js used for mapping (no API key needed)
+- Can switch to Google Maps API if needed

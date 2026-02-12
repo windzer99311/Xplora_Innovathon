@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Hospital - MedTrack</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/booking.css') }}">
+</head>
+<body class="booking-page-body">
+    <div class="booking-container">
+        <!-- Back Button -->
+        <div class="back-nav">
+            <a href="{{ url_for('dashboard') }}" class="back-btn">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+                Back
+            </a>
+        </div>
+
+        <!-- Booking Card -->
+        <div class="booking-card">
+            <!-- Hospital Header -->
+            <div class="hospital-header">
+                <h2 class="hospital-title" id="hospitalName">City General Hospital</h2>
+                <span class="status-badge available" id="statusBadge">Available</span>
+            </div>
+
+            <!-- Hospital Info -->
+            <div class="hospital-meta">
+                <div class="meta-item">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+                    </svg>
+                    <span id="hospitalCoords">28.6139, 77.2090</span>
+                </div>
+                <div class="meta-item">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328z"/>
+                    </svg>
+                    <span id="hospitalContact">+91-11-12345678</span>
+                </div>
+            </div>
+
+            <!-- Bed Availability Section -->
+            <div class="section-block">
+                <h3 class="section-title">Bed Availability</h3>
+                <div class="bed-cards" id="bedCards">
+                    <div class="bed-card" data-bed-type="icu">
+                        <div class="bed-icon">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                            </svg>
+                        </div>
+                        <div class="bed-info">
+                            <div class="bed-label">ICU Beds</div>
+                            <div class="bed-count"><span id="icuAvail">5</span>/<span id="icuTotal">20</span></div>
+                        </div>
+                    </div>
+
+                    <div class="bed-card" data-bed-type="oxygen">
+                        <div class="bed-icon">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                            </svg>
+                        </div>
+                        <div class="bed-info">
+                            <div class="bed-label">Oxygen Beds</div>
+                            <div class="bed-count"><span id="oxygenAvail">12</span>/<span id="oxygenTotal">30</span></div>
+                        </div>
+                    </div>
+
+                    <div class="bed-card active" data-bed-type="general">
+                        <div class="bed-icon">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H5z"/>
+                            </svg>
+                        </div>
+                        <div class="bed-info">
+                            <div class="bed-label">General Beds</div>
+                            <div class="bed-count"><span id="generalAvail">32</span>/<span id="generalTotal">100</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Select Services Section -->
+            <div class="section-block">
+                <h3 class="section-title">Select Services</h3>
+                <div class="service-options">
+                    <label class="service-option">
+                        <input type="checkbox" name="service" value="bed_booking" id="bedBookingService">
+                        <div class="service-content">
+                            <div class="service-icon">🛏️</div>
+                            <div class="service-details">
+                                <div class="service-name">Bed Booking</div>
+                                <div class="service-desc">Reserve a bed at this hospital</div>
+                            </div>
+                        </div>
+                        <div class="checkmark"></div>
+                    </label>
+
+                    <label class="service-option">
+                        <input type="checkbox" name="service" value="ambulance" id="ambulanceService">
+                        <div class="service-content">
+                            <div class="service-icon">🚑</div>
+                            <div class="service-details">
+                                <div class="service-name">Ambulance Service</div>
+                                <div class="service-desc">View & book nearest ambulances</div>
+                            </div>
+                        </div>
+                        <div class="checkmark"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Proceed Button -->
+            <button class="proceed-btn" id="proceedBtn" disabled style="opacity: 0.5;">
+                Proceed →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Get hospital data from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const hospitalId = urlParams.get('hospital_id') || urlParams.get('id'); // Support both parameters
+
+        let selectedBedType = 'general'; // Default to general as it's pre-selected
+        let selectedServices = [];
+        let actualHospitalId = null; // Store the actual hospital_id from API
+
+        // Validate and enable/disable proceed button
+        function validateForm() {
+            const proceedBtn = document.getElementById('proceedBtn');
+            const bedBookingChecked = document.getElementById('bedBookingService').checked;
+
+            if (bedBookingChecked) {
+                proceedBtn.disabled = false;
+                proceedBtn.style.opacity = '1';
+            } else {
+                proceedBtn.disabled = true;
+                proceedBtn.style.opacity = '0.5';
+            }
+        }
+
+        // Load hospital data
+        async function loadHospitalData() {
+            try {
+                const response = await fetch('/api/hospitals');
+                const hospitals = await response.json();
+                const hospital = hospitals.find(h => h.id == hospitalId);
+
+                if (hospital) {
+                    // Store the actual hospital_id for database operations
+                    actualHospitalId = hospital.hospital_id;
+
+                    document.getElementById('hospitalName').textContent = hospital.name;
+                    document.getElementById('hospitalCoords').textContent = `${hospital.lat.toFixed(4)}, ${hospital.lng.toFixed(4)}`;
+                    document.getElementById('hospitalContact').textContent = hospital.contact;
+
+                    // Update bed counts and disable cards with 0 beds
+                    const icuCard = document.querySelector('[data-bed-type="icu"]');
+                    const oxygenCard = document.querySelector('[data-bed-type="oxygen"]');
+                    const generalCard = document.querySelector('[data-bed-type="general"]');
+
+                    document.getElementById('icuAvail').textContent = hospital.beds.icu;
+                    document.getElementById('oxygenAvail').textContent = hospital.beds.oxygen;
+                    document.getElementById('generalAvail').textContent = hospital.beds.general;
+
+                    // Disable cards with 0 beds
+                    if (hospital.beds.icu === 0) {
+                        icuCard.classList.add('disabled');
+                        icuCard.style.opacity = '0.4';
+                        icuCard.style.cursor = 'not-allowed';
+                    }
+                    if (hospital.beds.oxygen === 0) {
+                        oxygenCard.classList.add('disabled');
+                        oxygenCard.style.opacity = '0.4';
+                        oxygenCard.style.cursor = 'not-allowed';
+                    }
+                    if (hospital.beds.general === 0) {
+                        generalCard.classList.add('disabled');
+                        generalCard.style.opacity = '0.4';
+                        generalCard.style.cursor = 'not-allowed';
+                    }
+
+                    // Check availability
+                    const totalBeds = hospital.beds.icu + hospital.beds.general + hospital.beds.oxygen;
+                    if (totalBeds === 0) {
+                        document.getElementById('statusBadge').textContent = 'Full';
+                        document.getElementById('statusBadge').classList.remove('available');
+                        document.getElementById('statusBadge').classList.add('full');
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading hospital data:', error);
+            }
+        }
+
+        // Bed type selection
+        document.querySelectorAll('.bed-card').forEach(card => {
+            card.addEventListener('click', () => {
+                // Prevent selection if disabled
+                if (card.classList.contains('disabled')) {
+                    return;
+                }
+
+                document.querySelectorAll('.bed-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                selectedBedType = card.dataset.bedType;
+                console.log('Selected bed type:', selectedBedType);
+                validateForm();
+            });
+        });
+
+        // Service selection
+        document.querySelectorAll('input[name="service"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                selectedServices = Array.from(document.querySelectorAll('input[name="service"]:checked'))
+                    .map(cb => cb.value);
+                console.log('Selected services:', selectedServices);
+                validateForm();
+            });
+        });
+
+        // Also make the whole service card clickable
+        document.querySelectorAll('.service-option').forEach(label => {
+            label.addEventListener('click', (e) => {
+                // Let the checkbox handle it naturally
+                console.log('Service option clicked');
+            });
+        });
+
+        // Proceed button
+        document.getElementById('proceedBtn').addEventListener('click', async () => {
+            // Extra validation (button should already be disabled if these aren't met)
+            if (!selectedBedType) {
+                alert('Please select a bed type');
+                return;
+            }
+
+            if (selectedServices.length === 0) {
+                alert('Please select at least one service');
+                return;
+            }
+
+            // Request location access
+            let location = null;
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    if (!navigator.geolocation) {
+                        reject(new Error('Geolocation not supported'));
+                    }
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    });
+                });
+                location = `${position.coords.longitude},${position.coords.latitude}`;
+            } catch (error) {
+                console.error('Location error:', error);
+                if (!confirm('Could not get your location. Continue without location?')) {
+                    return;
+                }
+                location = 'unknown';
+            }
+
+            const bookingData = {
+                hospital_id: actualHospitalId,  // Use the actual hospital_id from API
+                hospital_name: document.getElementById('hospitalName').textContent,
+                hospital_contact: document.getElementById('hospitalContact').textContent,
+                bed_type: selectedBedType,
+                services: selectedServices,
+                location: location,
+                ambulance: selectedServices.includes('ambulance')
+            };
+
+            try {
+                const response = await fetch('/api/book_hospital', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(`✅ ${data.message}`);
+                    // Redirect to dashboard and open Booking History modal
+                    window.location.href = '/dashboard?openBookings=true';
+                } else {
+                    alert(`❌ ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Booking failed. Please try again.');
+            }
+        });
+
+        // Load data on page load
+        loadHospitalData();
+        // Initialize form validation state
+        validateForm();
+    </script>
+</body>
+</html>

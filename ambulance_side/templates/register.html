@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambulance Driver Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .register-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .register-header h2 {
+            color: #667eea;
+            font-weight: bold;
+        }
+        .ambulance-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background: #667eea;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+        }
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        .btn-success {
+            padding: 8px 20px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        <div class="register-header">
+            <div class="ambulance-icon">🚑</div>
+            <h2>Ambulance Driver Registration</h2>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST" id="registerForm">
+            <div class="mb-3">
+                <label for="driver_name" class="form-label">Driver Name</label>
+                <input type="text" class="form-control" id="driver_name" name="driver_name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="driver_id" class="form-label">Driver ID (Unique)</label>
+                <input type="text" class="form-control" id="driver_id" name="driver_id" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="license_no" class="form-label">License Number</label>
+                <input type="text" class="form-control" id="license_no" name="license_no" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="vehicle_no" class="form-label">Vehicle Number</label>
+                <input type="text" class="form-control" id="vehicle_no" name="vehicle_no" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone" class="form-label">Driver Phone Number</label>
+                <div class="input-group">
+                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                    <button class="btn btn-success" type="button" id="sendOtpBtn">Send OTP</button>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="aadhar" class="form-label">Aadhar Number</label>
+                <input type="text" class="form-control" id="aadhar" name="aadhar" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Create Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="otp" class="form-label">OTP</label>
+                <input type="text" class="form-control" id="otp" name="otp" required disabled>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" id="registerBtn" disabled>Register</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <p>Already registered? <a href="{{ url_for('login') }}">Login here</a></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let otpSent = false;
+
+        document.getElementById('sendOtpBtn').addEventListener('click', async function() {
+            const phone = document.getElementById('phone').value;
+            if (!phone) {
+                alert('Please enter phone number');
+                return;
+            }
+
+            this.disabled = true;
+            this.textContent = 'Sending...';
+
+            try {
+                const response = await fetch('/send-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ phone: phone })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('OTP sent successfully!');
+                    document.getElementById('otp').disabled = false;
+                    document.getElementById('registerBtn').disabled = false;
+                    otpSent = true;
+                    this.textContent = 'Resend OTP';
+                } else {
+                    alert('Failed to send OTP: ' + data.message);
+                    this.textContent = 'Send OTP';
+                }
+            } catch (error) {
+                alert('Error sending OTP');
+                this.textContent = 'Send OTP';
+            }
+
+            this.disabled = false;
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            if (!otpSent) {
+                e.preventDefault();
+                alert('Please send and verify OTP first');
+            }
+        });
+    </script>
+</body>
+</html>

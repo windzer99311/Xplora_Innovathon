@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Client Requests{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2><i class="bi bi-inbox"></i> Client Emergency Requests</h2>
+        <p class="text-muted">Manage emergency bed requests from clients</p>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        {% if requests %}
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Active Requests ({{ requests|length }})</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Patient Name</th>
+                                <th>Phone Number</th>
+                                <th>Aadhar Number</th>
+                                <th>Bed Type</th>
+                                <th>Ambulance</th>
+                                <th>Address</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for req in requests %}
+                            <tr>
+                                <td>
+                                    <small class="text-muted">{{ req.created_at }}</small>
+                                </td>
+                                <td>
+                                    <strong>{{ req.name }}</strong>
+                                </td>
+                                <td>
+                                    <i class="bi bi-telephone"></i> {{ req.phone }}
+                                </td>
+                                <td>
+                                    {% if req.aadhar %}
+                                        <i class="bi bi-card-text"></i> {{ req.aadhar }}
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if req.bed_type %}
+                                        <span class="badge bg-info">{{ req.bed_type.upper() }}</span>
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if req.ambulance %}
+                                        <span class="badge bg-danger"><i class="bi bi-truck"></i> Yes</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">No</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <small>{{ req.address }}</small>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="tel:{{ req.phone }}" class="btn btn-success" title="Call">
+                                            <i class="bi bi-telephone-fill"></i>
+                                        </a>
+                                        <a href="sms:{{ req.phone }}" class="btn btn-primary" title="SMS">
+                                            <i class="bi bi-chat-dots-fill"></i>
+                                        </a>
+                                        <a href="https://wa.me/{{ req.phone.replace('+', '').replace(' ', '') }}" 
+                                           class="btn btn-info" title="WhatsApp" target="_blank">
+                                            <i class="bi bi-whatsapp"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card shadow">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-inbox display-1 text-muted"></i>
+                <h4 class="mt-3">No Requests Yet</h4>
+                <p class="text-muted">Emergency bed requests from clients will appear here</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if requests %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i>
+            <strong>Tip:</strong> Click the action buttons to quickly call, message, or WhatsApp the patient.
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

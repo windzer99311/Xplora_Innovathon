@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 0;
+        }
+        .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        .container-main {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .dashboard-header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .dashboard-header h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .location-status {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #28a745;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .location-status.loading {
+            background: #ffc107;
+        }
+        .notification-panel {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .notification-header h3 {
+            color: #333;
+            margin: 0;
+        }
+        .badge-count {
+            background: #dc3545;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .request-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .request-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        .request-info {
+            margin-bottom: 15px;
+        }
+        .request-info strong {
+            color: #667eea;
+            display: inline-block;
+            width: 120px;
+        }
+        .request-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-accept {
+            background: #28a745;
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            flex: 1;
+        }
+        .btn-accept:hover {
+            background: #218838;
+        }
+        .btn-deny {
+            background: #dc3545;
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            flex: 1;
+        }
+        .btn-deny:hover {
+            background: #c82333;
+        }
+        .no-requests {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        .no-requests-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+        .logout-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status-toggle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #28a745;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .history-card {
+            border-left: 4px solid #667eea;
+            background: #f8f9fa;
+        }
+        .status-label {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .status-accepted {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-denied {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .nav-tabs .nav-link {
+            color: #667eea;
+            font-weight: 600;
+        }
+        .nav-tabs .nav-link.active {
+            color: #667eea;
+            border-color: #dee2e6 #dee2e6 #fff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <span class="navbar-brand">🚑 Ambulance Driver Dashboard</span>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container-main">
+        <div class="dashboard-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2>Welcome, {{ session.driver_name }}!</h2>
+                    <p style="color: #666; margin-bottom: 15px;">Vehicle: {{ session.vehicle_no }} | Phone: {{ session.phone }}</p>
+                    <span class="location-status loading" id="locationStatus">📍 Getting location...</span>
+                </div>
+                <div style="text-align: right;">
+                    <div class="status-toggle">
+                        <label class="switch">
+                            <input type="checkbox" id="statusToggle" {% if session.is_active %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                        <div style="margin-top: 10px;">
+                            <span id="statusText" class="status-badge {% if session.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                {% if session.is_active %}🟢 Active{% else %}🔴 Inactive{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification-panel">
+            <div class="notification-header">
+                <div>
+                    <h3>🔔 Requests</h3>
+                </div>
+                <span class="badge-count">{{ requests|length }} Pending</span>
+            </div>
+
+            <!-- Tabs -->
+            <ul class="nav nav-tabs mb-4" id="requestTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="incoming-tab" data-bs-toggle="tab" data-bs-target="#incoming" type="button" role="tab">
+                        Incoming Requests
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">
+                        Request History
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="requestTabsContent">
+                <!-- Incoming Requests Tab -->
+                <div class="tab-pane fade show active" id="incoming" role="tabpanel">
+                    {% if requests %}
+                        {% for req in requests %}
+                        <div class="request-card">
+                            <div class="request-info">
+                                <strong>Patient Name:</strong> {{ req[1] }}
+                            </div>
+                            <div class="request-info">
+                                <strong>Phone:</strong> {{ req[2] }}
+                            </div>
+                            <div class="request-info">
+                                <strong>Location:</strong> {{ req[3] }}, {{ req[4] }}
+                            </div>
+                            <div class="request-info">
+                                <strong>Address:</strong> {{ req[5] }}
+                            </div>
+                            <div class="request-info">
+                                <strong>Time:</strong> {{ req[7] }}
+                            </div>
+                            <div class="request-actions">
+                                <a href="{{ url_for('accept_request', request_id=req[0]) }}" class="btn-accept">✅ Accept</a>
+                                <a href="{{ url_for('deny_request', request_id=req[0]) }}" class="btn-deny">❌ Deny</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-requests">
+                            <div class="no-requests-icon">📭</div>
+                            <h4>No Pending Requests</h4>
+                            <p>You'll be notified when new requests come in</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Request History Tab -->
+                <div class="tab-pane fade" id="history" role="tabpanel">
+                    {% if history %}
+                        {% for req in history %}
+                        <div class="request-card history-card">
+                            <div class="request-info">
+                                <strong>Patient Name:</strong> {{ req[1] }}
+                            </div>
+                            <div class="request-info">
+                                <strong>Phone:</strong> {{ req[2] }}
+                            </div>
+                            <div class="request-info">
+                                <strong>Location:</strong> {{ req[3] }}, {{ req[4] }}
+                            </div>
+                            <div class="request-info">
+                                <strong>Address:</strong> {{ req[5] }}
+                            </div>
+                            <div class="request-info">
+                                <strong>Status:</strong>
+                                <span class="status-label status-{{ req[6] }}">
+                                    {% if req[6] == 'accepted' %}✅ Accepted{% elif req[6] == 'denied' %}❌ Denied{% else %}⏳ {{ req[6] }}{% endif %}
+                                </span>
+                            </div>
+                            <div class="request-info">
+                                <strong>Time:</strong> {{ req[7] }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-requests">
+                            <div class="no-requests-icon">📋</div>
+                            <h4>No Request History</h4>
+                            <p>Your completed requests will appear here</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Request location permission
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    // Update location on server
+                    fetch('/update-location', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ lat: lat, lng: lng })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('locationStatus').textContent = `📍 Location: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+                            document.getElementById('locationStatus').classList.remove('loading');
+                        }
+                    });
+                },
+                function(error) {
+                    document.getElementById('locationStatus').textContent = '📍 Location access denied';
+                    document.getElementById('locationStatus').style.background = '#dc3545';
+                }
+            );
+        } else {
+            document.getElementById('locationStatus').textContent = '📍 Location not supported';
+            document.getElementById('locationStatus').style.background = '#dc3545';
+        }
+
+        // Toggle status
+        document.getElementById('statusToggle').addEventListener('change', async function() {
+            try {
+                const response = await fetch('/toggle-status', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const statusText = document.getElementById('statusText');
+                    if (data.is_active) {
+                        statusText.textContent = '🟢 Active';
+                        statusText.className = 'status-badge status-active';
+                    } else {
+                        statusText.textContent = '🔴 Inactive';
+                        statusText.className = 'status-badge status-inactive';
+                    }
+                }
+            } catch (error) {
+                console.error('Error toggling status:', error);
+            }
+        });
+    </script>
+</body>
+</html>
