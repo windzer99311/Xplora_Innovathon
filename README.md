@@ -236,7 +236,7 @@ cd ../hospital_side/hospital_dashboard
 
 | Karan Kumar Mahato | Yuvraj Sha | Ankit Kumar | Abinash Pradhan |
 |:---:|:---:|:---:|:---:|
-| [![Karan](https://github.com/windzer99311.png?size=100)](https://github.com/windzer99311) | [![Yuvraj](https://github.com/github.png?size=100)](https://github.com/) | [![Ankit](https://github.com/github.png?size=100)](https://github.com/) | [![Abinash](https://github.com/github.png?size=100)](https://github.com/) |
+| [![Karan](https://github.com/windzer99311.png?size=100)](https://github.com/windzer99311) | [![Yuvraj](https://github.com/github.png?size=100)](https://github.com/) | [![Ankit](https://github.com/github.png?size=100)](https://github.com/ank906kumar-906) | [![Abinash](https://github.com/github.png?size=100)](https://github.com/) |
 | [@windzer99311](https://github.com/windzer99311) | @yuvrajsha | @ankitkumar | @abinashpradhan |
 
 ---
